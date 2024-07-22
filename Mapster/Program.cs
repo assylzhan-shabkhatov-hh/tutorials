@@ -4,32 +4,31 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.SqlServer;
 using Microsoft.EntityFrameworkCore;
+using MapsterApp;
+using Mapster;
+using MapsterMapper;
+using System.Reflection;
 
-namespace Mapster
-{
-    internal class Program
-    {
-        static async Task Main(string[] args)
-        {
-            HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
+HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
-            IConfigurationRoot config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false)
-                .AddJsonFile("appsettings.local.json", optional: true)
-                .Build();
+IConfigurationRoot config = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", optional: false)
+    .AddJsonFile("appsettings.local.json", optional: true)
+    .Build();
 
-            builder.Services.AddAppDbContext(config, "Application");
+builder.Services.AddAppDbContext(config, "Application");
+//builder.Services.AddSingleton<RegisterMapper>();
 
-            using IHost host = builder.Build();
+TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
 
-            using var serviceScope = host.Services.CreateScope();
-            IServiceProvider provider = serviceScope.ServiceProvider;
-            var db = provider.GetRequiredService<ApplicationDbContext>();
+using IHost host = builder.Build();
 
-            var users = await db.Users.AsNoTracking()
-                .ToListAsync(CancellationToken.None);
+using var serviceScope = host.Services.CreateScope();
+IServiceProvider provider = serviceScope.ServiceProvider;
+var db = provider.GetRequiredService<ApplicationDbContext>();
 
-            await host.RunAsync();
-        }
-    }
-}
+var users = await db.Users.AsNoTracking()
+    .ProjectToType<UserDto>()
+    .ToListAsync(CancellationToken.None);
+
+await host.RunAsync();

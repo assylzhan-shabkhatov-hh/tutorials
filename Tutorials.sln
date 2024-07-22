@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mapster", "Mapster\Mapster.csproj", "{D968A0F7-8AD0-4B9F-9C40-4D98FD2807A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapsterApp", "Mapster\MapsterApp.csproj", "{D968A0F7-8AD0-4B9F-9C40-4D98FD2807A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.SqlServer", "Infrastructure.SqlServer\Infrastructure.SqlServer.csproj", "{DCA22821-39E0-4381-986A-61D44FE40979}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.SqlServer", "Infrastructure.SqlServer\Infrastructure.SqlServer.csproj", "{DCA22821-39E0-4381-986A-61D44FE40979}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

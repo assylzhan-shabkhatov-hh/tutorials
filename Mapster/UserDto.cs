@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mapster
+namespace MapsterApp
 {
-    public record UserDto(int Id, string FullName, string Email); 
+    public record UserDto(int Id, string FullName, string Email);
 }
