@@ -31,4 +31,5 @@ var users = await db.Users.AsNoTracking()
     .ProjectToType<UserDto>()
     .ToListAsync(CancellationToken.None);
 
-await host.RunAsync();
+
+//await host.RunAsync();
