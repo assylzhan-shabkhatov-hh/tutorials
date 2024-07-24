@@ -9,27 +9,14 @@ using Mapster;
 using MapsterMapper;
 using System.Reflection;
 
-HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
-
 IConfigurationRoot config = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false)
     .AddJsonFile("appsettings.local.json", optional: true)
     .Build();
 
-builder.Services.AddAppDbContext(config, "Application");
-//builder.Services.AddSingleton<RegisterMapper>();
+var serviceProvider = new ServiceCollection()
+        .AddAppDbContext(config, "Application")
+        .BuildServiceProvider();
 
-TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
-
-using IHost host = builder.Build();
-
-using var serviceScope = host.Services.CreateScope();
-IServiceProvider provider = serviceScope.ServiceProvider;
-var db = provider.GetRequiredService<ApplicationDbContext>();
-
-var users = await db.Users.AsNoTracking()
-    .ProjectToType<UserDto>()
-    .ToListAsync(CancellationToken.None);
-
-
-//await host.RunAsync();
+var db = serviceProvider.GetRequiredService<ApplicationDbContext>();
